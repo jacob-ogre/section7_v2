@@ -1,0 +1,66 @@
+---
+title: "Section 7: Species"
+output:
+  html_document:
+    css: custom.css
+    df_print: kable
+    highlight: tango
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(knitr)
+library(shiny)
+
+spp_look <- readRDS("data/spp_lookup.rds")
+spp <- c("All", unique(spp_look$spp))
+dat <- readRDS("data/FWS_s7_03May2016.rds")
+```
+
+Use this page to explore section 7 consultation data from the standpoint of species:
+
+```{r spp_select, echo=FALSE, cache=FALSE}
+fluidPage(
+  fluidRow(
+    column(12,
+      selectInput(
+        "spp_select",
+        "Select species",
+        choices = spp,
+        selected = "All",
+        multiple = TRUE,
+        width = "100%"
+      )
+    )
+  )
+)
+
+cur_dat <- reactive({
+  if(input$spp_select != "All") {
+    looks <- filter(spp_look, spp %in% input$spp_select)
+    return(dat[looks$idx, ])
+  }
+  return(dat)
+})
+
+# knitr::kable(head(cur_dat()[, 1:5]))
+# renderTable({head(cur_dat()[, 1:5])})
+```
+
+# Through time
+
+```{r calc_trends, echo=FALSE, cache=FALSE}
+trend <- "stayed the same"
+```
+
+Consultation rates have `r trend` for the selected species. 
+`r icon("arrow-circle-left")` This sentence would change depending on the
+sign of the n_consult ~ year regression.
+
+```{r time_plot, echo=FALSE, cache=FALSE}
+
+```

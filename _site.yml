@@ -1,0 +1,20 @@
+name: "section7-v2"
+navbar:
+  title: "Section 7 Explorer"
+  type: inverse
+  left:
+    - text: "Home"
+      href: index.Rmd
+    - text: "Species"
+      href: species.Rmd
+    - text: "Agencies"
+      href: agencies.Rmd
+    - text: "Activities"
+      href: activities.Rmd
+    - text: "Data"
+      href: data.Rmd
+    - text: "About"
+      href: about.Rmd
+  right:
+    - icon: fa-question fa-lg
+      href: https://example.com

@@ -1,14 +1,14 @@
 # BSD_2_clause
 
-#' @import shiny methods
-#' @export
-topline <- function(data) {
+# if I had any sense I would drop this in a package...
+topline <- function(data, select) {
   library(AdminLTE)
   shinyApp(
     ui = fluidPage(
-      # theme = "AdminLTE.css",
       tags$head( tags$style(AdminLTE()) ),
-        column(6,
+      fluidRow(br()),
+      fluidRow(
+        column(4,
           valueBox(
             subtitle = "# consultations",
             value = textOutput("n_cons"),
@@ -17,7 +17,7 @@ topline <- function(data) {
             width = NULL
           )
         ),
-        column(6,
+        column(4,
           valueBox(
             subtitle = "# formal consultations",
             value = textOutput("n_form"),
@@ -26,7 +26,17 @@ topline <- function(data) {
             width = NULL
           )
         ),
-        column(6,
+        column(4,
+          # shiny::icon("arrow-circle-left", "fa-3x"),
+          htmlOutput("n_consult_phrase")
+        )
+      ),
+      fluidRow(hr()),
+      fluidRow(
+        column(4,
+          htmlOutput("T_consult_phrase")
+        ),
+        column(4,
           valueBox(
             subtitle = "Consultation duration (median)",
             value = textOutput("time_all"),
@@ -35,7 +45,7 @@ topline <- function(data) {
             width = NULL
           )
         ),
-        column(6,
+        column(4,
           valueBox(
             subtitle = "Formal consultation duration",
             value = textOutput("time_formal"),
@@ -44,6 +54,8 @@ topline <- function(data) {
             width = NULL
           )
         )
+      ),
+      fluidRow(br())
     ),
 
     server = function(input, output, session) {
@@ -60,6 +72,29 @@ topline <- function(data) {
       output$time_all <- renderText({ paste(all_time, "days") })
 
       output$time_formal <- renderText({ paste(form_time, "days") })
+
+      output$n_consult_phrase <- renderUI({
+        if(!select) {
+          tags$blockquote("The number of consultations - total and formal only -
+            performed by FWS since January, 2015.")
+        } else {
+          p("The number of consultations - total and formal only - in the
+            current selection."
+          )
+        }
+      })
+
+      output$T_consult_phrase <- renderUI({
+        if(!select) {
+          tags$blockquote("The median duration of consultations performed by FWS
+            since January, 2015.")
+        } else {
+          p("The duration of consultations - total and formal only - in the
+            current selection."
+          )
+        }
+      })
+
     }
   )
 }

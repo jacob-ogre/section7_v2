@@ -1,0 +1,148 @@
+---
+title: "Section 7 Overview"
+output: 
+  html_document:
+    css: custom.css
+    df_print: kable
+    highlight: tango
+    toc: true
+    toc_depth: 2
+    toc_float: true
+    runtime: shiny
+---
+
+```{r setup, include=FALSE}
+# knitr::opts_chunk$set(cache=TRUE)
+
+library(AdminLTE)
+# library(bsplus)
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+library(plotly)
+library(shiny)
+library(shinydashboard)
+
+source("micro/topline.R")
+
+# dat <- readRDS("FWS_s7_03May2016.rds")
+# dat_form <- filter(dat, formal_consult == "Yes")
+all_cons <- 90950
+form_cons <- 7543
+all_time <- "14 days"
+form_time <- "63 days"
+```
+
+Section 7 of the U.S. Endangered Species Act (ESA) is often considered the most
+important section of the law. Any federal
+agency whose actions may affect an ESA-listed species are required to consult
+with the U.S. Fish and Wildlife Service (FWS) and/or the National Marine Fisheries
+Service (NMFS) to ensure the action does not jeopardize the species' existence
+or adversely modify or destroy its critical habitat. A federal action could mean
+a number of things, such as:
+
+- issuing a permit to dredge or fill a wetland (a Clean Water Act 404 permit);
+- funding a highway project; or
+- carrying out an activity, such as prescribed burns on a National Forest.
+
+The reach and strength of section 7 means it is the focus of many arguments about
+the ESA. Despite decades of argument, no one had checked to see what
+the data had to say about how the section has been implemented. In 2015, we 
+published the first complete analysis of section 7 consultations done by FWS 
+in the ESA's 42-year history 
+([Malcom and Li, 2015](http://www.pnas.org/content/112/52/15844.abstract)).
+That analysis showed that common perceptions of how the section is implemented 
+are often wrong.
+
+This web application provides access to the entire dataset analyzed by Malcom
+and Li, plus data updates provided by FWS since the publication."
+
+# Data overview
+
+## Count and duration
+
+To get a scale of FWS's consultation program, considert the number of 
+consultations - total and formal only - performed by FWS since January, 2015:
+
+```{r topline_1, echo=FALSE, cache=FALSE}
+# cons <- table(dat$formal_consult)
+
+fluidPage(
+  tags$head(tags$style(AdminLTE())),
+  fluidRow(br()),
+  fluidRow(
+    column(6,
+      renderValueBox(
+        valueBox(
+          subtitle = "# consultations",
+          value = all_cons,
+          color = "navy",
+          icon = NULL,
+          width = NULL
+        )
+      )
+    ),
+    column(6,
+      renderValueBox(
+        valueBox(
+          subtitle = "# formal consultations",
+          value = form_cons,
+          color = "orange",
+          icon = NULL,
+          width = NULL
+        )
+      )
+    )
+  )
+)
+```
+
+Now consider the duration of consultation - in terms of the time FWS performs 
+the consultation - for these `r all_cons` consultations:
+
+```{r topline_2, cache=FALSE, echo=FALSE}
+# all_time <- paste(
+#   median(dat$elapsed, na.rm = TRUE),
+#   "days"
+# )
+# 
+# form_time <- paste(
+#   median(dplyr::filter(dat, formal_consult == "Yes")$elapsed, na.rm = TRUE),
+#   "days"
+# )
+
+fluidPage(
+  # tags$head( tags$style(AdminLTE()) ),
+  fluidRow(br()),
+  fluidRow(
+    column(6,
+      valueBox(
+        subtitle = "Consultation duration (median)",
+        value = all_time,
+        color = "navy",
+        icon = NULL,
+        width = NULL
+      )
+    ),
+    column(6,
+      valueBox(
+        subtitle = "Formal consultation duration",
+        value = form_time,
+        color = "orange",
+        icon = NULL,
+        width = NULL
+      )
+    )
+  )
+)
+# topline(data = dat, select = FALSE)
+```
+
+## Through time
+
+```{r thru_time_1, echo=FALSE, cache=FALSE}
+# yr_all_dat <- aggregate(dat$ )
+# thru_time(data = dat, select = FALSE)
+```
+
+
